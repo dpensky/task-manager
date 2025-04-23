@@ -41,16 +41,20 @@ A simple full-stack task management application that allows users to register, l
 ---
 ## 📂 Project Structure
 ```
-task-manager/
+task-manager
 ├── backend
-│   ├── main.py
-│   └── models.py
+│   ├── auth.py
+│   ├── database.py
+│   ├── main.py
+│   ├── models.py
+│   └── schemas.py
 ├── commands.txt
 ├── endpoints.txt
-├── frontend
-│   ├── app.js
-│   ├── index.html
-│   └── style.css
+├── LICENSE
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── static
+    ├── app.js
+    ├── index.html
+    └── style.css
 ```
