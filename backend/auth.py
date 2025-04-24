@@ -55,6 +55,19 @@ def verify_token(token: str) -> dict:
 def get_user(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
 
+# Create and register user
+def register_user(user: schemas.UserCreate, db: Session) -> schemas.Token:
+    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+    hashed_password = hash_password(user.password)
+    new_user = models.User(username=user.username, hashed_password=hashed_password)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    access_token = create_access_token(data={"sub": new_user.username})
+    return {"access_token": access_token, "token_type": "bearer"}
+
 # Create a new user
 def create_user(user: schemas.UserCreate, db: Session):
     # Hash the user's password before saving

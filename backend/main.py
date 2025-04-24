@@ -31,9 +31,9 @@ def read_root():
 
 # ---------- Auth Routes ----------
 
-@app.post("/register", response_model=schemas.UserOut)
+@app.post("/register", response_model=schemas.Token)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return auth.create_user(user, db)
+    return auth.register_user(user, db)
 
 @app.post("/login")
 def login(user: schemas.UserLogin, db: Session = Depends(get_db)):

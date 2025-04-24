@@ -10,8 +10,18 @@ async function register() {
       password: document.getElementById("password").value,
     }),
   })
-  if (res.ok) {
-    alert("Registered! Now log in.")
+  // OLD WAY, 2 STEP REGISTER
+  // if (res.ok) {
+  //   alert("Registered! Now log in.")
+  // } else {
+  //   alert("Registration failed.")
+  // }
+  const data = await res.json()
+  if (data.access_token) {
+    token = data.access_token
+    document.getElementById("auth-section").style.display = "none"
+    document.getElementById("task-section").style.display = "block"
+    loadTasks()
   } else {
     alert("Registration failed.")
   }
