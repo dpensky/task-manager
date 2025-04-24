@@ -1,5 +1,13 @@
 // JS to handle API calls
-let token = ""
+let token = localStorage.getItem("token")
+
+window.onload = () => {
+  if (token) {
+    document.getElementById("auth-section").style.display = "none"
+    document.getElementById("task-section").style.display = "block"
+    loadTasks()
+  }
+}
 
 async function register() {
   const res = await fetch("/register", {
@@ -18,6 +26,7 @@ async function register() {
   // }
   const data = await res.json()
   if (data.access_token) {
+    localStorage.setItem("token", data.access_token)
     token = data.access_token
     document.getElementById("auth-section").style.display = "none"
     document.getElementById("task-section").style.display = "block"
@@ -38,6 +47,7 @@ async function login() {
   })
   const data = await res.json()
   if (data.access_token) {
+    localStorage.setItem("token", data.access_token)
     token = data.access_token
     document.getElementById("auth-section").style.display = "none"
     document.getElementById("task-section").style.display = "block"
@@ -86,4 +96,11 @@ async function deleteTask(id) {
     headers: { Authorization: `Bearer ${token}` },
   })
   loadTasks()
+}
+
+function logout() {
+  localStorage.removeItem("token")
+  token = null
+  document.getElementById("auth-section").style.display = "block"
+  document.getElementById("task-section").style.display = "none"
 }
