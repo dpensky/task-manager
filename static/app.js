@@ -57,20 +57,62 @@ async function login() {
   }
 }
 
+// async function loadTasks() {
+//   const res = await fetch("/tasks/", {
+//     headers: { Authorization: `Bearer ${token}` },
+//   })
+//   const tasks = await res.json()
+//   const list = document.getElementById("task-list")
+//   list.innerHTML = ""
+//   tasks.forEach(task => {
+//     const li = document.createElement("li")
+//     li.innerHTML = `
+//       ${task.title} (${task.is_completed ? "✅" : "❌"})
+//       <button onclick="deleteTask(${task.id})">❌</button>
+//     `
+//     list.appendChild(li)
+//   })
+// }
+
 async function loadTasks() {
-  const res = await fetch("/tasks/", {
-    headers: { Authorization: `Bearer ${token}` },
+  const res = await fetch("/tasks", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   })
-  const tasks = await res.json()
-  const list = document.getElementById("task-list")
-  list.innerHTML = ""
-  tasks.forEach(task => {
+
+  const data = await res.json()
+  const taskList = document.getElementById("task-list")
+  taskList.innerHTML = "" // Clear list before rendering
+
+  data.forEach(task => {
     const li = document.createElement("li")
-    li.innerHTML = `
-      ${task.title} (${task.is_completed ? "✅" : "❌"})
-      <button onclick="deleteTask(${task.id})">❌</button>
-    `
-    list.appendChild(li)
+    // if (task.is_completed) {
+    //   li.classList.add("completed")
+    // }
+
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.checked = task.is_completed
+    checkbox.onchange = () => toggleTask(task.id, !task.is_completed)
+
+    const span = document.createElement("span")
+    span.textContent = task.title
+    if (task.is_completed) {
+      span.classList.add("completed")
+    }
+    const deleteBtn = document.createElement("button")
+    deleteBtn.textContent = "🗑️"
+    deleteBtn.className = "btn"
+    deleteBtn.style.marginLeft = "auto"
+    deleteBtn.style.background = "#f87171"
+    deleteBtn.style.color = "white"
+    deleteBtn.onclick = () => deleteTask(task.id)
+
+    li.appendChild(checkbox)
+    li.appendChild(span)
+    li.appendChild(deleteBtn)
+    taskList.appendChild(li)
   })
 }
 
@@ -103,4 +145,17 @@ function logout() {
   token = null
   document.getElementById("auth-section").style.display = "block"
   document.getElementById("task-section").style.display = "none"
+}
+
+async function toggleTask(id, is_completed) {
+  await fetch(`/tasks/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ is_completed }),
+  })
+
+  loadTasks() // Refresh the list after updating
 }

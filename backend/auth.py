@@ -117,6 +117,7 @@ def create_task(task: schemas.TaskCreate, db: Session, user_id: int):
 # Update a task's details
 def update_task(task_id: int, task: schemas.TaskUpdate, db: Session, user_id: int):
     db_task = db.query(models.Task).filter(models.Task.id == task_id, models.Task.owner_id == user_id).first()
+    print(task)
     if not db_task:
         raise HTTPException(status_code=404, detail="Task not found")
     if task.title:
