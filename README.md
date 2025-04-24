@@ -2,6 +2,8 @@
 
 A simple full-stack task management application that allows users to register, log in, and manage their to-do tasks. Built with **FastAPI** for the backend and **JavaScript** for the frontend.
 
+Test it here: https://task-manager-99m1.onrender.com/
+
 ---
 
 ## 🔧 Features
