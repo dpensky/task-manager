@@ -48,8 +48,6 @@ task-manager
 │   ├── main.py
 │   ├── models.py
 │   └── schemas.py
-├── commands.txt
-├── endpoints.txt
 ├── LICENSE
 ├── README.md
 ├── requirements.txt

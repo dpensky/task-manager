@@ -2,7 +2,7 @@
 let token = ""
 
 async function register() {
-  const res = await fetch("http://localhost:8000/register", {
+  const res = await fetch("/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -18,7 +18,7 @@ async function register() {
 }
 
 async function login() {
-  const res = await fetch("http://localhost:8000/login", {
+  const res = await fetch("/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -38,7 +38,7 @@ async function login() {
 }
 
 async function loadTasks() {
-  const res = await fetch("http://localhost:8000/tasks/", {
+  const res = await fetch("/tasks/", {
     headers: { Authorization: `Bearer ${token}` },
   })
   const tasks = await res.json()
@@ -57,7 +57,7 @@ async function loadTasks() {
 async function addTask() {
   const title = document.getElementById("new-title").value
   const description = document.getElementById("new-desc").value
-  await fetch("http://localhost:8000/tasks/", {
+  await fetch("/tasks/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -71,7 +71,7 @@ async function addTask() {
 }
 
 async function deleteTask(id) {
-  await fetch(`http://localhost:8000/tasks/${id}`, {
+  await fetch(`/tasks/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
   })
